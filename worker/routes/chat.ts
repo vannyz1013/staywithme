@@ -1,39 +1,37 @@
 // POST /api/chat -- the friend's reply, streamed back a few words at a time.
 
 import { anthropic, MODEL, EFFORT } from '../lib/anthropic';
+import { toApiMessages } from '../lib/media';
 import { streamText } from '../lib/sse';
 import { fail, readJson } from '../lib/json';
 import { buildSystemPrompt } from '../prompt/system';
 import type { ChatRequest, Env, WireMessage } from '../types';
 
 /** Guards against a malformed body reaching the API and costing a call. */
-function invalid(body: ChatRequest | null): string | null {
-  if (!body) return 'Body was not valid JSON.';
-  if (typeof body.characterId !== 'string') return 'characterId is required.';
-  if (!Array.isArray(body.messages) || body.messages.length === 0) return 'messages is required.';
-  if (body.messages.some((m) => typeof m?.text !== 'string' || (m.role !== 'user' && m.role !== 'assistant'))) {
+export function invalid(messages: WireMessage[] | undefined, requireUserLast: boolean): string | null {
+  if (!Array.isArray(messages) || messages.length === 0) return 'messages is required.';
+  if (messages.some((m) => typeof m?.text !== 'string' || (m.role !== 'user' && m.role !== 'assistant'))) {
     return 'messages must be {role, text} pairs.';
   }
-  const last = body.messages[body.messages.length - 1];
-  if (last?.role !== 'user') return 'The last message must be from the user.';
+  if (requireUserLast && messages[messages.length - 1]?.role !== 'user') {
+    return 'The last message must be from the user.';
+  }
   return null;
-}
-
-function toApiMessages(messages: WireMessage[]) {
-  return messages.map((m) => ({ role: m.role, content: m.text }));
 }
 
 export async function handleChat(request: Request, env: Env): Promise<Response> {
   const body = await readJson<ChatRequest>(request);
-  const problem = invalid(body);
-  if (problem || !body) return fail(problem ?? 'Bad request.');
+  if (!body) return fail('Body was not valid JSON.');
 
-  const system = buildSystemPrompt(body.characterId, body.memory ?? [], body.displayName);
+  const problem = invalid(body.messages, true);
+  if (problem) return fail(problem);
+
+  const system = buildSystemPrompt(body);
   if (!system) return fail(`No such character: ${body.characterId}`, 404);
 
   // Pulled out of the generator below: a hoisted `function*` does not keep
-  // the narrowing from the two guards above, and `body!` everywhere reads
-  // worse than naming the things once.
+  // the narrowing from the guards above, and naming them once reads better
+  // than `body!` throughout.
   const client = anthropic(env);
   const systemPrompt: string = system;
   const messages = toApiMessages(body.messages);

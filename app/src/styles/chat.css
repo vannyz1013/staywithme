@@ -17,7 +17,6 @@
   background: var(--surface);
 }
 
-.chat-header-who { display: flex; flex-direction: column; line-height: 1.2; flex: 1; min-width: 0; }
 .chat-header-tagline { color: oklch(0.72 0.12 var(--hue)); font-size: 0.8rem; }
 
 .thread {
@@ -131,3 +130,145 @@
   cursor: pointer;
 }
 .composer-send:disabled { opacity: 0.5; cursor: default; }
+
+/* Modes ---------------------------------------------------------------- */
+
+.mode-bar {
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.45rem 0.75rem 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.mode-bar::-webkit-scrollbar { display: none; }
+
+.mode {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  flex: none;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.mode[aria-pressed='true'] {
+  border-color: oklch(0.65 0.15 var(--hue, 268));
+  background: var(--surface-2);
+  color: var(--ink);
+}
+.mode-icon { font-size: 0.95rem; }
+
+/* Attachments ---------------------------------------------------------- */
+
+.composer { flex-direction: column; align-items: stretch; gap: 0.5rem; }
+.composer-row { display: flex; align-items: flex-end; gap: 0.5rem; }
+
+.composer-attach {
+  appearance: none;
+  width: 44px;
+  height: 44px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: var(--surface-2);
+  color: var(--ink-dim);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.composer-attach:hover { color: var(--ink); }
+.composer-attach:disabled { opacity: 0.5; cursor: default; }
+
+.tray { display: flex; gap: 0.4rem; }
+.tray[hidden] { display: none; }
+
+.tray-item {
+  width: 56px;
+  height: 56px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
+}
+
+.photos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.photo {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 12px;
+  display: block;
+}
+
+/* Right now ------------------------------------------------------------ */
+
+.state {
+  padding: 0.55rem 0.9rem;
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+.state[hidden] { display: none; }
+
+.state-title {
+  margin: 0 0 0.3rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.state-body { display: flex; flex-wrap: wrap; gap: 0.25rem 1.1rem; }
+.state-row { display: flex; gap: 0.4rem; font-size: 0.84rem; }
+.state-label { color: var(--ink-dim); }
+.state-value { color: oklch(0.75 0.12 var(--hue)); }
+
+/* The quiet door to real people ---------------------------------------- */
+
+.help-link {
+  appearance: none;
+  align-self: center;
+  margin: 0.35rem auto 0;
+  padding: 0.25rem 0.6rem;
+  border: 0;
+  background: none;
+  color: var(--ink-dim);
+  font: inherit;
+  font-size: 0.8rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.help-link:hover { color: var(--ink); }
+
+.chat-header-who {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex: 1;
+  min-width: 0;
+  padding: 0.2rem;
+  border: 0;
+  border-radius: 12px;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.chat-header-who:hover { background: var(--surface-2); }
+.chat-header-name { display: flex; flex-direction: column; line-height: 1.2; }

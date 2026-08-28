@@ -3,13 +3,17 @@
 // arriving here is an API call.
 
 import { handleChat } from './routes/chat';
+import { handleNudge } from './routes/nudge';
 import { handleRemember } from './routes/remember';
+import { handleState } from './routes/state';
 import { fail, json } from './lib/json';
 import { preflight, withCors } from './lib/cors';
 import type { Env } from './types';
 
 const ROUTES: Record<string, (request: Request, env: Env) => Promise<Response>> = {
   '/api/chat': handleChat,
+  '/api/nudge': handleNudge,
+  '/api/state': handleState,
   '/api/remember': handleRemember,
 };
 
@@ -29,7 +33,7 @@ export default {
 
     try {
       // handleChat returns a streaming Response that already carries CORS
-      // headers; withCors is a no-op re-set on it and matters for the rest.
+      // headers; withCors is a harmless re-set on it and matters for the rest.
       return withCors(await route(request, env));
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Something went wrong.';

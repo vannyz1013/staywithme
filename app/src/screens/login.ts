@@ -10,15 +10,18 @@ import { signUp } from '../auth/sign-up';
 import type { User } from '../auth/user';
 import { isCloudConfigured } from '../config/supabase-config';
 import { el } from '../core/el';
+import { t } from '../i18n/current';
 import type { Screen } from '../core/mount';
 import { toast } from '../ui/toast';
 
 export function loginScreen(onSignedIn: (user: User) => void): Screen {
+  const strings = t();
+
   // Returning to a device that already has an account should not open on
   // the sign-up form.
   let creating = isCloudConfigured ? false : !hasLocalAccount();
 
-  const name = el('input', { class: 'field', type: 'text', name: 'name', placeholder: 'What should they call you?', autocomplete: 'nickname' });
+  const name = el('input', { class: 'field', type: 'text', name: 'name', placeholder: strings.namePlaceholder, autocomplete: 'nickname' });
   const email = el('input', { class: 'field', type: 'email', name: 'email', placeholder: 'you@email.com', autocomplete: 'email' });
   const secret = el('input', { class: 'field', type: 'password', name: 'password', autocomplete: 'current-password' });
 
@@ -29,13 +32,11 @@ export function loginScreen(onSignedIn: (user: User) => void): Screen {
   function render(): void {
     name.hidden = !creating;
     email.hidden = !isCloudConfigured;
-    secret.placeholder = isCloudConfigured ? 'Password' : 'A 4-digit PIN';
+    secret.placeholder = isCloudConfigured ? strings.passwordPlaceholder : strings.pinPlaceholder;
     secret.setAttribute('autocomplete', creating ? 'new-password' : 'current-password');
-    submit.textContent = creating ? 'Create my account' : 'Come in';
-    swap.textContent = creating ? 'I already have an account' : "I'm new here";
-    note.textContent = isCloudConfigured
-      ? ''
-      : 'No account server is set up yet, so this stays on this device only. See SETUP.md.';
+    submit.textContent = creating ? strings.createAccount : strings.comeIn;
+    swap.textContent = creating ? strings.haveAccount : strings.imNew;
+    note.textContent = isCloudConfigured ? '' : strings.localOnly;
   }
 
   swap.addEventListener('click', () => {
@@ -72,7 +73,7 @@ export function loginScreen(onSignedIn: (user: User) => void): Screen {
   const node = el('main', { class: 'screen screen-login' }, [
     el('div', { class: 'login-card' }, [
       el('h1', { class: 'wordmark', text: 'Stay With Me' }),
-      el('p', { class: 'lede', text: 'Someone is awake. Pick who, and start talking.' }),
+      el('p', { class: 'lede', text: strings.tagline }),
       form,
     ]),
   ]);

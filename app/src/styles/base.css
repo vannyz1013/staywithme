@@ -148,7 +148,13 @@ body {
 .toast {
   position: fixed;
   left: 50%;
-  bottom: calc(1.25rem + env(safe-area-inset-bottom));
+  /* Clear of the composer. A toast that lands on top of the text box is a
+     toast you have to wait out before you can type again -- and because it
+     also swallowed the click, the retry silently went nowhere. */
+  bottom: calc(5.5rem + env(safe-area-inset-bottom));
+  /* Informational only. Nothing here is ever clicked, so nothing here
+     should be able to intercept a click. */
+  pointer-events: none;
   transform: translate(-50%, 1rem);
   max-width: min(30rem, calc(100vw - 2rem));
   padding: 0.7rem 1rem;

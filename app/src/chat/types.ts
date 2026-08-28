@@ -4,6 +4,8 @@
 export interface WireMessage {
   role: 'user' | 'assistant';
   text: string;
+  /** Photos or video frames, as `data:image/jpeg;base64,...`. */
+  images?: string[];
 }
 
 /** Called once per streamed piece, with the reply so far. */

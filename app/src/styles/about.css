@@ -1,0 +1,73 @@
+/* What they know about you. Deliberately a set of lists rather than a
+   dashboard -- no bars, no numbers to grow. */
+
+.screen-about {
+  overflow-y: auto;
+  padding-bottom: calc(2rem + env(safe-area-inset-bottom));
+}
+
+.about-header {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.75rem 1rem;
+  padding-top: calc(0.75rem + env(safe-area-inset-top));
+  border-bottom: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.about-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 42rem;
+  width: 100%;
+  margin: 0 auto;
+  padding: 1.25rem 1rem;
+}
+
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1rem 1.1rem;
+}
+
+.panel-title {
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.facts, .moments, .traits { list-style: none; margin: 0; padding: 0; }
+
+.fact, .moment, .trait {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--line);
+}
+.facts > :first-child, .moments > :first-child, .traits > :first-child { border-top: 0; }
+
+.fact-actions { display: flex; gap: 0.25rem; flex: none; }
+.fact-actions .link { font-size: 0.8rem; padding: 0.1rem 0.25rem; }
+
+.link-danger { color: var(--danger); }
+.link-danger:hover { color: var(--danger); }
+
+.moment-title { color: oklch(0.78 0.12 var(--hue)); }
+.moment-when { color: var(--ink-dim); font-size: 0.8rem; flex: none; }
+
+.empty { color: var(--ink-dim); font-size: 0.9rem; padding: 0.2rem 0; }
+
+.about-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}

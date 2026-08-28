@@ -1,0 +1,55 @@
+/* The panels that slide over a screen: "make them yours", and the door to
+   real people. Both are dismissed by tapping the dimmed area. */
+
+.sheet {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.45);
+  z-index: 20;
+}
+
+@media (min-width: 40rem) {
+  .sheet { align-items: center; }
+}
+
+.sheet-body {
+  width: min(30rem, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 1.35rem;
+  padding-bottom: calc(1.35rem + env(safe-area-inset-bottom));
+  border: 1px solid var(--line);
+  border-radius: var(--radius) var(--radius) 0 0;
+  background: var(--surface);
+}
+
+@media (min-width: 40rem) {
+  .sheet-body { border-radius: var(--radius); }
+}
+
+.sheet-title { margin: 0; font-size: 1.15rem; }
+.sheet-lede { margin: 0 0 0.5rem; color: var(--ink-dim); font-size: 0.9rem; }
+.sheet-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.6rem; }
+
+.field-label {
+  margin-top: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--ink-dim);
+}
+
+.field-note { resize: vertical; font-family: inherit; }
+
+.help-option {
+  display: flex;
+  gap: 0.75rem;
+  padding: 0.7rem 0;
+  border-top: 1px solid var(--line);
+}
+.help-icon { font-size: 1.3rem; }
+.help-detail { margin: 0.2rem 0 0; color: var(--ink-dim); font-size: 0.87rem; }
