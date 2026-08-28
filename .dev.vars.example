@@ -1,0 +1,3 @@
+# Copy to .dev.vars (git-ignored) for `bun run dev:api`.
+# In production this lives in `bunx wrangler secret put ANTHROPIC_API_KEY`.
+ANTHROPIC_API_KEY=sk-ant-...

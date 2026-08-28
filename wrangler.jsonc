@@ -1,0 +1,27 @@
+{
+  // Cloudflare Worker: serves the built site from docs/ and answers the two
+  // API routes the browser cannot make itself (they need the Anthropic key).
+  //
+  //   bunx wrangler login                      once, opens a browser
+  //   bunx wrangler secret put ANTHROPIC_API_KEY
+  //   bun run deploy                           builds, then ships
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "staywithme",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-08-01",
+  "compatibility_flags": ["nodejs_compat"],
+
+  "assets": {
+    "directory": "./docs",
+
+    // Every non-asset path returns the app, because the app is a single
+    // page and a hard 404 would strand anyone who refreshed on /chat.
+    "not_found_handling": "single-page-application",
+
+    // ...except the API. Without this, not_found_handling above would
+    // hand /api/chat the index.html instead of running the Worker.
+    "run_worker_first": ["/api/*"]
+  },
+
+  "observability": { "enabled": true }
+}

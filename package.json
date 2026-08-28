@@ -1,0 +1,27 @@
+{
+  "name": "staywithme",
+  "private": true,
+  "type": "module",
+  "version": "0.1.0",
+  "description": "Stay With Me -- pick a friend, talk to them, they remember you.",
+  "packageManager": "bun@1.4.0",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "wrangler dev --port 8787",
+    "build": "vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc --noEmit -p tsconfig.worker.json",
+    "deploy": "bun run build && wrangler deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260828.1",
+    "@types/bun": "^1.4.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2",
+    "wrangler": "^4.125.0"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.122.0",
+    "@supabase/supabase-js": "^2.112.4"
+  }
+}
