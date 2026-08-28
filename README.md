@@ -1,6 +1,13 @@
 # Stay With Me
 
+**Try it: https://vannyz1013.github.io/staywithme/**
+
 Somewhere to go when the people around you are busy.
+
+> The link above is the real app — sign in, pick a companion, walk the whole
+> thing. The one part it cannot do is reply: answers come from Claude through
+> a Cloudflare Worker holding an API key, and a public demo has no key behind
+> it. Clone it and follow SETUP.md to talk to them properly.
 
 Five companions. You pick one, and they are the same one next time — they
 remember what you told them, they pick up what was left hanging, and they are
