@@ -1,5 +1,6 @@
 node_modules/
-docs/
+# docs/ is the built site AND what GitHub Pages serves, so it is committed --
+# same arrangement as the Pocket repo. `bun run build` regenerates it.
 .wrangler/
 app/src/config/supabase.json
 .dev.vars
