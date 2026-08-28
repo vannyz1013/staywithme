@@ -26,12 +26,12 @@ async function problem(response: Response): Promise<string> {
     const parsed = JSON.parse(body) as { error?: string };
     if (parsed.error) return parsed.error;
   } catch {
-    // Not JSON at all. On a static host with no Worker behind it -- the
-    // GitHub Pages copy, for instance -- /api/chat is just a missing file,
-    // and "404" tells nobody anything useful.
-    if (response.status === 404) {
-      return 'No companion server is connected to this copy of the app, so nobody can answer yet. Everything else works -- see SETUP.md to run it with your own key.';
-    }
+    // Not JSON at all, which means it did not come from the Worker -- the
+    // Worker reports every failure as JSON. On a static host there is no
+    // Worker behind /api/chat, and the status code varies by host (GitHub
+    // Pages answers a POST to a static path with 405, not the 404 you would
+    // expect), so the shape of the body is the reliable signal, not the code.
+    return 'No companion server is connected to this copy of the app, so nobody can answer yet. Everything else here works -- see SETUP.md to run it with your own key.';
   }
 
   return `The friend could not be reached (${response.status}).`;
