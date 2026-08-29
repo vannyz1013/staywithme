@@ -138,7 +138,13 @@ export const geminiProvider: Provider = {
 
       // SSE frames are separated by a blank line; the tail is usually a
       // partial frame, so it waits for the next read.
-      const frames = buffer.split('\n\n');
+      //
+      // Split on CRLF as well as LF. Google ends every frame with CRLF CRLF,
+      // and "\r\n\r\n" does not contain "\n\n" -- so splitting on "\n\n"
+      // matched nothing, the buffer grew forever, not one frame was ever
+      // emitted, and every reply arrived empty. Found against the live
+      // endpoint, not in review.
+      const frames = buffer.split(/\r?\n\r?\n/);
       buffer = frames.pop() ?? '';
 
       for (const frame of frames) {
