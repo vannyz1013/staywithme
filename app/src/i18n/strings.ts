@@ -11,6 +11,7 @@ import { uiLanguage } from './languages';
 export interface Strings {
   tagline: string;
   namePlaceholder: string;
+  /** Local-only mode: any password the person chooses, no format rule. */
   pinPlaceholder: string;
   passwordPlaceholder: string;
   createAccount: string;
@@ -65,7 +66,7 @@ export interface Strings {
 const EN: Strings = {
   tagline: "Someone's here. Pick who, and start talking.",
   namePlaceholder: 'What should they call you?',
-  pinPlaceholder: 'A 4-digit PIN',
+  pinPlaceholder: 'Enter any password',
   passwordPlaceholder: 'Password',
   createAccount: 'Create my account',
   comeIn: 'Come in',
@@ -118,7 +119,7 @@ const EN: Strings = {
 const MS: Partial<Strings> = {
   tagline: 'Ada orang di sini. Pilih siapa, dan mula berbual.',
   namePlaceholder: 'Nak dipanggil apa?',
-  pinPlaceholder: 'PIN 4 angka',
+  pinPlaceholder: 'Masukkan apa-apa kata laluan',
   passwordPlaceholder: 'Kata laluan',
   createAccount: 'Buat akaun saya',
   comeIn: 'Masuk',
@@ -163,7 +164,7 @@ const MS: Partial<Strings> = {
 const ZH: Partial<Strings> = {
   tagline: '有人在。选一个，然后聊聊。',
   namePlaceholder: '他们该怎么称呼你？',
-  pinPlaceholder: '四位数密码',
+  pinPlaceholder: '输入任意密码',
   passwordPlaceholder: '密码',
   createAccount: '创建账号',
   comeIn: '进来吧',

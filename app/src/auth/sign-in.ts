@@ -14,7 +14,7 @@ export async function signIn(email: string, password: string): Promise<SignInRes
 
   if (!client) {
     const user = localSignIn(password);
-    return user ? { user } : { user: null, error: 'That PIN does not match this device.' };
+    return user ? { user } : { user: null, error: 'That password does not match this device.' };
   }
 
   const { data, error } = await client.auth.signInWithPassword({ email, password });
