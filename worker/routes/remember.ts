@@ -11,7 +11,7 @@
 // arrive one per turn, and running this each time would fill the memory with
 // "they said hi".
 
-import { anthropic, MODEL, EFFORT } from '../lib/anthropic';
+import { provider } from '../lib/model';
 import { fail, json, readJson } from '../lib/json';
 import { getPersona } from '../prompt/persona';
 import type { Env, RememberRequest } from '../types';
@@ -49,22 +49,15 @@ export async function handleRemember(request: Request, env: Env): Promise<Respon
     .map((message) => `${message.role === 'user' ? 'Them' : 'You'}: ${message.text}`)
     .join('\n');
 
-  const client = anthropic(env);
-  const response = await client.messages.create({
-    model: MODEL,
-    max_tokens: 1000,
-    output_config: { effort: EFFORT },
-    system: INSTRUCTIONS,
-    messages: [
-      { role: 'user', content: `Existing notes:\n${existing}\n\nConversation:\n${transcript}` },
-    ],
-  });
-
-  const text = response.content
-    .filter((block): block is Extract<typeof block, { type: 'text' }> => block.type === 'text')
-    .map((block) => block.text)
-    .join('')
-    .trim();
+  const text = (
+    await provider(env).once(env, {
+      system: INSTRUCTIONS,
+      messages: [
+        { role: 'user', text: `Existing notes:\n${existing}\n\nConversation:\n${transcript}` },
+      ],
+      maxTokens: 1000,
+    })
+  ).trim();
 
   try {
     const parsed = JSON.parse(text.replace(/^```(?:json)?|```$/g, '').trim()) as {

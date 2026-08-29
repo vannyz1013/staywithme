@@ -6,7 +6,7 @@
 //
 // Fired in parallel with /api/chat, so it costs a call but no waiting.
 
-import { anthropic, MODEL } from '../lib/anthropic';
+import { provider } from '../lib/model';
 import { fail, json, readJson } from '../lib/json';
 import { invalid } from './chat';
 import type { Env, StateRequest } from '../types';
@@ -35,22 +35,14 @@ export async function handleState(request: Request, env: Env): Promise<Response>
     .map((message) => `${message.role === 'user' ? 'Them' : 'Friend'}: ${message.text}`)
     .join('\n');
 
-  const client = anthropic(env);
-  const response = await client.messages.create({
-    model: MODEL,
-    max_tokens: 200,
-    // The cheapest setting there is: this is a four-field reading, not a
-    // judgement call.
-    output_config: { effort: 'low' },
-    system: INSTRUCTIONS,
-    messages: [{ role: 'user', content: transcript }],
-  });
-
-  const text = response.content
-    .filter((block): block is Extract<typeof block, { type: 'text' }> => block.type === 'text')
-    .map((block) => block.text)
-    .join('')
-    .trim();
+  const text = (
+    await provider(env).once(env, {
+      system: INSTRUCTIONS,
+      messages: [{ role: 'user', text: transcript }],
+      // A four-field reading, not a judgement call.
+      maxTokens: 200,
+    })
+  ).trim();
 
   // Bare JSON was asked for, but a fence would still parse as a failure --
   // and this reading is not worth a retry, so the browser just keeps the

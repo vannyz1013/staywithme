@@ -1,7 +1,14 @@
 // Shapes shared across the Worker. Nothing here executes.
 
 export interface Env {
-  /** Set with `bunx wrangler secret put ANTHROPIC_API_KEY`. Never in git. */
+  /**
+   * Google Gemini, the default: free tier, no card, from
+   * aistudio.google.com/apikey. Set with
+   * `bunx wrangler secret put GEMINI_API_KEY`. Never in git.
+   */
+  GEMINI_API_KEY: string;
+
+  /** Anthropic's Claude. Better replies, pay-as-you-go. Optional. */
   ANTHROPIC_API_KEY: string;
 }
 

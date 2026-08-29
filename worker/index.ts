@@ -7,6 +7,7 @@ import { handleNudge } from './routes/nudge';
 import { handleRemember } from './routes/remember';
 import { handleState } from './routes/state';
 import { fail, json } from './lib/json';
+import { configuredProvider } from './lib/model';
 import { preflight, withCors } from './lib/cors';
 import type { Env } from './types';
 
@@ -24,7 +25,8 @@ export default {
     const { pathname } = new URL(request.url);
 
     if (pathname === '/api/health') {
-      return withCors(json({ ok: true, key: Boolean(env.ANTHROPIC_API_KEY) }));
+      const model = configuredProvider(env);
+      return withCors(json({ ok: true, key: model !== null, model }));
     }
 
     const route = ROUTES[pathname];

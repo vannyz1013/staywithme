@@ -1,3 +1,9 @@
 # Copy to .dev.vars (git-ignored) for `bun run dev:api`.
-# In production this lives in `bunx wrangler secret put ANTHROPIC_API_KEY`.
-ANTHROPIC_API_KEY=sk-ant-...
+#
+# Gemini is the default and it is free: get a key at
+# https://aistudio.google.com/apikey -- no credit card.
+GEMINI_API_KEY=AIza...
+
+# Optional. Claude gives better replies but is pay-as-you-go, so it is only
+# used when GEMINI_API_KEY is absent. Leave this out unless you have one.
+# ANTHROPIC_API_KEY=sk-ant-...

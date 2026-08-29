@@ -5,34 +5,58 @@ do them in whatever order suits you.
 
 ---
 
-## 1. The Anthropic key -- makes the friends reply
+## 1. A model key -- makes the companions reply
 
-Without this, the chat screen loads and sending shows an error.
+Without this, the chat screen loads and sending shows an explanation.
 
-**For local development**
+### Gemini (free, recommended)
+
+Get a key at <https://aistudio.google.com/apikey>. Sign in with Google, click
+Create API key. **No credit card.** It is a permanent free tier, not a trial.
+
+Two things about it that are true and worth knowing:
+
+- Google **uses free-tier conversations to improve their models**. For your own
+  testing that is your choice to make; if other people ever use your copy, they
+  cannot consent to something they do not know, so tell them or move to the
+  paid tier (where Google does not train on it).
+- There are per-minute and per-day request limits. Hitting one returns an
+  error, never a charge.
+
+### Claude (optional, better, costs money)
+
+If you have an Anthropic key it will be used instead -- set
+`ANTHROPIC_API_KEY` and leave `GEMINI_API_KEY` unset. Replies are noticeably
+sharper, especially in Vent and Listen where nuance matters. Roughly USD $0.02
+per message at the current settings.
+
+**Note that a ChatGPT or Claude subscription does not work here.** Chat
+subscriptions and the API are separate products; a subscription gives you no
+API key.
+
+### For local development
 
 ```bash
 cp .dev.vars.example .dev.vars
 ```
 
-Open `.dev.vars` and paste your key from
-<https://console.anthropic.com/settings/keys>. The file is git-ignored.
+Open `.dev.vars`, paste your key, save. The file is git-ignored.
 
-**For the deployed Worker**
+### For the deployed Worker
 
 ```bash
-bunx wrangler login                        # once, opens a browser
-bunx wrangler secret put ANTHROPIC_API_KEY  # paste when prompted
+bunx wrangler login                      # once, opens a browser
+bunx wrangler secret put GEMINI_API_KEY  # paste when prompted
 ```
 
-The key lives on Cloudflare from then on. It is never in the repo and never
-in the browser bundle -- that is the whole reason the Worker exists.
+The key lives on Cloudflare from then on -- never in the repo, never in the
+browser bundle. That is the whole reason the Worker exists.
 
 Check it landed:
 
 ```bash
 curl https://staywithme.<your-subdomain>.workers.dev/api/health
-# {"ok":true,"key":true}
+# {"ok":true,"key":true,"model":"gemini"}
 ```
 
 ---

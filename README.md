@@ -5,9 +5,10 @@
 Somewhere to go when the people around you are busy.
 
 > The link above is the real app — sign in, pick a companion, walk the whole
-> thing. The one part it cannot do is reply: answers come from Claude through
+> thing. The one part it cannot do is reply: answers come from a model through
 > a Cloudflare Worker holding an API key, and a public demo has no key behind
-> it. Clone it and follow SETUP.md to talk to them properly.
+> it. Clone it and follow SETUP.md — the default is Google's **free** tier, so
+> talking to them properly costs nothing.
 
 Five companions. You pick one, and they are the same one next time — they
 remember what you told them, they pick up what was left hanging, and they are
@@ -134,11 +135,22 @@ companion goes in both.
 
 ## What it costs
 
-Each message is one call to `claude-opus-5`, plus a small parallel call that
-reads the mood, plus a third every eight messages that decides what is worth
-remembering. Effort is `low` in `worker/lib/anthropic.ts` — conversation does
-not need more, and it keeps replies fast. Raise it there if answers ever feel
-shallow.
+Nothing, by default. `worker/lib/model.ts` picks a provider by which key is
+present:
+
+| | |
+|---|---|
+| `GEMINI_API_KEY` | `gemini-3.5-flash` on Google's free tier — no card, permanent, rate limited. The default. |
+| `ANTHROPIC_API_KEY` | `claude-opus-5` — sharper replies, roughly $0.02 a message. Used only if there is no Gemini key. |
+
+Each message is one call, plus a small parallel one that reads the mood, plus
+a third every eight messages that decides what is worth remembering.
+
+Adding a third provider means one file next to `gemini.ts` and one line in
+`model.ts`; no route knows who answers.
+
+**A ChatGPT or Claude subscription cannot be used here** — chat subscriptions
+and the API are separate products, and a subscription gives you no API key.
 
 ## One thing this app is not
 

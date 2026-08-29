@@ -8,8 +8,8 @@
 // friend who fills every pause is exhausting. It says so by replying with
 // exactly "--", which the browser drops.
 
-import { anthropic, MODEL, EFFORT } from '../lib/anthropic';
-import { toApiMessages } from '../lib/media';
+import { prepare } from '../lib/media';
+import { provider } from '../lib/model';
 import { fail, json, readJson } from '../lib/json';
 import { buildSystemPrompt } from '../prompt/system';
 import { invalid } from './chat';
@@ -38,28 +38,22 @@ export async function handleNudge(request: Request, env: Env): Promise<Response>
   const system = buildSystemPrompt(body);
   if (!system) return fail(`No such character: ${body.characterId}`, 404);
 
-  const client = anthropic(env);
-  const response = await client.messages.create({
-    model: MODEL,
-    max_tokens: 300,
-    output_config: { effort: EFFORT },
-    system,
-    messages: [
-      ...toApiMessages(body.messages),
-      {
-        role: 'user',
-        // A system message rather than a fake line from them: the person did
-        // not say this, and a fabricated user turn would end up in history.
-        content: `[${instruction(body.reason, body.quietMinutes)} ${DECLINE}]`,
-      },
-    ],
-  });
-
-  const text = response.content
-    .filter((block): block is Extract<typeof block, { type: 'text' }> => block.type === 'text')
-    .map((block) => block.text)
-    .join('')
-    .trim();
+  const text = (
+    await provider(env).once(env, {
+      system,
+      messages: [
+        ...prepare(body.messages),
+        {
+          role: 'user',
+          // Bracketed as an instruction rather than written as a line from
+          // them: the person did not say this, and a fabricated user turn
+          // would end up shaping the reply as if they had.
+          text: `[${instruction(body.reason, body.quietMinutes)} ${DECLINE}]`,
+        },
+      ],
+      maxTokens: 300,
+    })
+  ).trim();
 
   return json({ text: text === '--' || text.length === 0 ? null : text });
 }
