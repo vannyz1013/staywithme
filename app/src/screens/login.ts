@@ -44,7 +44,11 @@ export function loginScreen(onSignedIn: (user: User) => void): Screen {
     render();
   });
 
-  const form = el('form', { class: 'login-form' }, [name, email, secret, submit, swap, note]);
+  // Always shown, in every mode. Someone opening a shared link has no way to
+  // know where their words go unless the app says so before they type.
+  const privacy = el('p', { class: 'note note-privacy', text: strings.dataNotice });
+
+  const form = el('form', { class: 'login-form' }, [name, email, secret, submit, swap, note, privacy]);
 
   form.addEventListener('submit', async (event) => {
     event.preventDefault();

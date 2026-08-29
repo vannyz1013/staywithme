@@ -19,6 +19,8 @@ export interface Strings {
   haveAccount: string;
   imNew: string;
   localOnly: string;
+  /** Shown to everyone, always. Strangers cannot consent to what they do not know. */
+  dataNotice: string;
   whoTonight: string;
   signOut: string;
   say: string;
@@ -73,6 +75,8 @@ const EN: Strings = {
   haveAccount: 'I already have an account',
   imNew: "I'm new here",
   localOnly: 'No account server is set up yet, so this stays on this device only.',
+  dataNotice:
+    'What you type here is sent to Google to generate the reply, and Google may use it to improve their models. Please do not share anything you would not want read.',
   whoTonight: 'Who do you feel like talking to?',
   signOut: 'Sign out',
   say: 'Say something...',
@@ -125,6 +129,8 @@ const MS: Partial<Strings> = {
   comeIn: 'Masuk',
   haveAccount: 'Saya sudah ada akaun',
   imNew: 'Saya baru di sini',
+  dataNotice:
+    'Apa yang kamu taip dihantar kepada Google untuk menjana jawapan, dan Google mungkin menggunakannya untuk menambah baik model mereka. Jangan kongsi apa-apa yang kamu tak mahu dibaca.',
   whoTonight: 'Nak berbual dengan siapa?',
   signOut: 'Log keluar',
   say: 'Cakap sesuatu...',
@@ -170,6 +176,8 @@ const ZH: Partial<Strings> = {
   comeIn: '进来吧',
   haveAccount: '我已经有账号了',
   imNew: '我是新来的',
+  dataNotice:
+    '你输入的内容会发送给 Google 来生成回复，Google 可能会用它来改进他们的模型。请不要分享你不希望被看到的内容。',
   whoTonight: '今天想跟谁聊？',
   signOut: '退出',
   say: '说点什么…',

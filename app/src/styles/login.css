@@ -22,3 +22,10 @@
 }
 
 .login-form .primary { margin-top: 0.35rem; }
+
+/* Where the words go. Quiet, but never hidden and never behind a link. */
+.note-privacy {
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+  line-height: 1.45;
+}
